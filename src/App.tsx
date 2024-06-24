@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import './App.css';
+import UserTable from './components/TableUser/TableDataUser';
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const navigate = useNavigate();
+
+
+
+  const users = [
+    { id: 1, name: 'John Doe', email: 'john@example.com', gender: 'Male', status: 'Active' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com', gender: 'Female', status: 'Inactive' },
+    // Agrega más usuarios según sea necesario
+  ];
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+
+    <div>
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">Lista de Usuarios</h1>
+        <UserTable users={users} />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+
+
+  );
 }
 
-export default App
+
+
+export default App;
