@@ -1,6 +1,7 @@
 // userReducer.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { UserTableUser } from './components/TableUser/TableDataUser';
+import { UserTableUser } from './UserInterface';
+
 
 export interface UserState {
     users: UserTableUser[];
