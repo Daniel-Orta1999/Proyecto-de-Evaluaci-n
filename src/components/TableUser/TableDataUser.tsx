@@ -1,10 +1,6 @@
-export interface UserTableUser {
-  id: number;
-  name: string;
-  email: string;
-  gender: string;
-  status: string;
-}
+
+import { UserTableUser } from "../../UserInterface";
+
 interface UserTableProps {
   users: UserTableUser[];
 }

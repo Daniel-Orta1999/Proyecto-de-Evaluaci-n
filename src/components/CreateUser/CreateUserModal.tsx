@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Modal from 'react-modal';
+import { Gender} from "../../Enums";
+
 
 type CreateUserModalProps = {
     isOpen: boolean;
@@ -7,31 +9,32 @@ type CreateUserModalProps = {
 };
 
 const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) => {
+    
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [gender, setGender] = useState('');
+    const [gender, setGender] = useState<Gender>(Gender.Male);
     const [errorMessage, setErrorMessage] = useState('');
+
 
     const handleCreateClick = () => {
         if (!name.trim() || !email.trim() || !gender.trim()) {
             setErrorMessage('Por favor, complete todos los campos.');
             return;
         }
-        // Aquí puedes manejar la lógica para crear el usuario con los datos (nombre, email, genero)
-        // Por ejemplo, puedes enviar una solicitud a tu API aquí
-        console.log('Creando usuario con:', { name, email, gender });
+        
+        
         onClose();
         setName('');
         setEmail('');
-        setGender('');
+        setGender(Gender.Male);
         setErrorMessage('');
     };
+
     const handleCancelClick = () => {
-        // Simplemente cierra el modal sin hacer ninguna acción
         onClose();
         setName('');
         setEmail('');
-        setGender('');
+        setGender(Gender.Male);
         setErrorMessage('');
     };
     return (
@@ -39,8 +42,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
             isOpen={isOpen}
             onRequestClose={onClose}
             contentLabel="Crear Usuario"
-            ariaHideApp={false} // Necesario para evitar errores de accesibilidad
-            className="modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg p-6 max-w-md shadow-lg"
+            ariaHideApp={false}
+            className="modal fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#0F1035] rounded-lg p-6 max-w-md shadow-lg"
             overlayClassName="overlay fixed top-0 left-0 w-full h-full bg-gray-500 bg-opacity-50"
         >
             <div>
@@ -49,47 +52,54 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
                     <p className="text-sm text-red-500 mb-4">{errorMessage}</p>
                 )}
                 <form>
-                    <div className="mb-4">
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre:</label>
-                        <input
-                            type="text"
-                            id="name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                            required
-                        />
+                    <div className=" p-4 rounded-lg">
+                        <div className="relative bg-tra">
+                            <input
+                                type="text"
+                                id="name"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="peer bg-transparent h-10 w-72 rounded-lg text-gray-200 placeholder-transparent ring-2 px-2 ring-gray-500 focus:ring-sky-600 focus:outline-none focus:border-rose-600"
+                                placeholder="Nombre:"
+                                required
+                            />
+                            <label htmlFor="name" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit mx-1 px-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all">Nombre:</label>
+                        </div>
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email:</label>
-                        <input
-                            type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                            required
-                        />
+                    <div className=" p-4 rounded-lg">
+                        <div className="relative bg-inherit">
+                            <input
+                                type="text"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="peer bg-transparent h-10 w-72 rounded-lg text-gray-200 placeholder-transparent ring-2 px-2 ring-gray-500 focus:ring-sky-600 focus:outline-none focus:border-rose-600"
+                                placeholder="Email:"
+                                required
+                            />
+                            <label htmlFor="email" className="absolute cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit mx-1 px-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm transition-all">Email:</label>
+                        </div>
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Género:</label>
+                    <div className="mb-4 mx-2 px-2">
+                        <label htmlFor="gender" className="block  font-medium text-gray-700  cursor-text left-0 -top-3 text-sm text-gray-500 bg-inherit   peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-500 peer-placeholder-shown:top-2 peer-focus:-top-3 peer-focus:text-sky-600 peer-focus:text-sm">Género:</label>
                         <select
                             id="gender"
                             value={gender}
-                            onChange={(e) => setGender(e.target.value)}
-                            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                            onChange={(e) => setGender(e.target.value as Gender)} // Asegúrate de castear el valor a Gender
+                            className="peer bg-transparent h-10 w-72 rounded-lg text-gray-200 placeholder-transparent ring-2 px-2 ring-gray-500 focus:ring-sky-600 focus:outline-none focus:border-rose-600"
                             required
                         >
-                            <option value="">Selecciona</option>
-                            <option value="male">Masculino</option>
-                            <option value="female">Femenino</option>
+                            <option value={Gender.Male}>{Gender.Male}</option>
+                            <option value={Gender.Female}>{Gender.Female}</option>
+
                         </select>
                     </div>
+
                     <div className="flex justify-end">
                         <button
                             type="button"
                             onClick={handleCancelClick}
-                            className="mr-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-400 hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                            className="mr-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-gray-700 bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                         >
                             Cancelar
                         </button>
