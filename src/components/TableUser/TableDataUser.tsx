@@ -1,11 +1,23 @@
 
+import { useState } from "react";
 import { UserTableUser } from "../../UserInterface";
+import DeleteUserModal from "../DeleteUser/DeleteUserModal";
+import { TrashIcon } from "@heroicons/react/24/outline";
 
 interface UserTableProps {
   users: UserTableUser[];
 }
 const UserTable: React.FC<UserTableProps> = ({ users }) => {
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<UserTableUser | null>(null);
+  const openModal = (user: UserTableUser) => {
+    setUserToDelete(user);
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setUserToDelete(null);
+    setIsModalOpen(false);
+  };
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border border-gray-200">
@@ -40,17 +52,15 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
                 >
                   Editar
                 </button>
-                <button
-                  onClick={() => handleDelete(user.id)}
-                  className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-700"
-                >
-                  Eliminar
+                <button onClick={() => openModal(user)} className="bg-transparent text-red-600 py-1 px-2 rounded hover:bg-gray-200">
+                  <TrashIcon className="w-4 h-4" />
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <DeleteUserModal isOpen={isModalOpen} onClose={closeModal} user={userToDelete}/>
     </div>
   );
 };
@@ -59,8 +69,5 @@ const handleShow = (id: number) => {
 };
 const handleEdit = (id: number) => {
   console.log(`Editar usuario con ID: ${id}`);
-};
-const handleDelete = (id: number) => {
-  console.log(`Eliminar usuario con ID: ${id}`);
 };
 export default UserTable;
