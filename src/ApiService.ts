@@ -16,7 +16,6 @@ export const getDatos = async () => {
         throw new Error(`Error al obtener datos: ${error}`);
     }
 };
-
 export const postUser = async (formData: any) => {
     try {
         const response = await axiosInstance.post('/users', formData, {
@@ -25,7 +24,7 @@ export const postUser = async (formData: any) => {
                 'Authorization': `Bearer ${token}`,
             }
         });
-        return response.data; 
+        return response.data;
     } catch (error) {
         throw new Error(`Error al crear usuario: ${error}`);
     }
@@ -40,7 +39,21 @@ export const deleteUser = async (id: any) => {
             }
         });
         console.log(response)
-        return response.status; 
+        return response.status;
+    } catch (error) {
+        throw new Error(`Error al crear usuario: ${error}`);
+    }
+};
+
+export const putUser = async (formData: any, id: number) => {
+    try {
+        const response = await axiosInstance.put(`/users/${id}`, formData, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+        return response.data;
     } catch (error) {
         throw new Error(`Error al crear usuario: ${error}`);
     }
