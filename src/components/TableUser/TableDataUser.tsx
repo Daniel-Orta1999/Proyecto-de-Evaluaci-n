@@ -5,7 +5,7 @@ import DeleteUserModal from "../DeleteUser/DeleteUserModal";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import CreateUserModal from "../CreateUser/CreateUserModal";
-import { PencilSquareIcon } from "@heroicons/react/24/solid";
+import { EyeIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 
 interface UserTableProps {
   users: UserTableUser[];
@@ -17,6 +17,7 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
 
   const handleShow = (id: number) => {
     console.log(`Ver usuario con ID: ${id}`);
+    navigate(`/user/${id}`);
   };
   const handleEdit = (user: UserTableUser) => {
     navigate(`/edit/${user.id}`);
@@ -70,9 +71,8 @@ const UserTable: React.FC<UserTableProps> = ({ users }) => {
               <td className="py-2 px-4 border-b text-center">
                 <button
                   onClick={() => handleShow(user.id)}
-                  className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-700 mr-2"
-                >
-                  Ver
+                  className="bg-transparent text-blue-600 py-1 px-2 rounded hover:bg-gray-200">
+                  <EyeIcon className="w-4 h-4" />
                 </button>
                 <button onClick={() => handleEdit(user)} className="bg-transparent text-violet-600 py-1 px-2 rounded hover:bg-gray-200">
                   <PencilSquareIcon className="w-4 h-4" />

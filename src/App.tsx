@@ -28,7 +28,8 @@ function App() {
       <div className="container mx-auto p-4">
         <Routes>
           <Route path="/" element={<TableDataUser users={users} />} />
-          <Route path="/edit/:id" element={<EditUserForm />} />
+          <Route path="/edit/:id" element={<EditUserForm action={true} />} />
+          <Route path="/user/:id" element={<EditUserForm action={false} />} />
         </Routes>
       </div>
     </div>
