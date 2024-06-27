@@ -1,8 +1,8 @@
 export enum Gender {
-    Male = 'Male',
-    Female = 'Female',
+    Male = 'male',
+    Female = 'female',
 }
 export enum Status {
-    Active = 'Active',
-    Inactive = 'Inactive',
+    Active = 'active',
+    Inactive = 'inactive',
 }
