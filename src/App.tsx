@@ -1,7 +1,7 @@
 import './App.css';
 import { Route, Routes } from 'react-router-dom';
-import EditUserForm from './components/EditUser/EditUserForm';
-import TableDataUser from './components/TableUser/TableDataUser';
+import EditUserForm from './pages/EditUser/EditUserForm';
+import TableDataUser from './pages/TableUser/TableDataUser';
 
 function App() {
   return (
