@@ -7,9 +7,9 @@ const axiosInstance = axios.create({
 });
 const token = "355978d0c49eef7a7ce8c0a058ae5523734d3c81fb4fc43c86be9686438ca0b0";
 
-export const getDatos = async () => {
+export const getDatos = async (page:number, per_page:number) => {
     try {
-        const response = await axiosInstance.get('/users');
+        const response = await axiosInstance.get(`/users?page=${page}&per_page=${per_page}`);
         console.log(response.data);
         return response;
     } catch (error) {
