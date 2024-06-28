@@ -7,16 +7,15 @@ const axiosInstance = axios.create({
 });
 const token = "355978d0c49eef7a7ce8c0a058ae5523734d3c81fb4fc43c86be9686438ca0b0";
 
-export const getDatos = async () => {
+export const getDatos = async (page:number, per_page:number) => {
     try {
-        const response = await axiosInstance.get('/users');
+        const response = await axiosInstance.get(`/users?page=${page}&per_page=${per_page}`);
         console.log(response.data);
         return response;
     } catch (error) {
         throw new Error(`Error al obtener datos: ${error}`);
     }
 };
-
 export const postUser = async (formData: any) => {
     try {
         const response = await axiosInstance.post('/users', formData, {
@@ -25,7 +24,7 @@ export const postUser = async (formData: any) => {
                 'Authorization': `Bearer ${token}`,
             }
         });
-        return response.data; 
+        return response.data;
     } catch (error) {
         throw new Error(`Error al crear usuario: ${error}`);
     }
@@ -40,7 +39,21 @@ export const deleteUser = async (id: any) => {
             }
         });
         console.log(response)
-        return response.status; 
+        return response.status;
+    } catch (error) {
+        throw new Error(`Error al crear usuario: ${error}`);
+    }
+};
+
+export const putUser = async (formData: any, id: number) => {
+    try {
+        const response = await axiosInstance.put(`/users/${id}`, formData, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+        return response.data;
     } catch (error) {
         throw new Error(`Error al crear usuario: ${error}`);
     }
