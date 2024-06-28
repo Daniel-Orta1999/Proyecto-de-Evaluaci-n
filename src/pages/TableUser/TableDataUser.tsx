@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { UserTableUser } from "../../UserInterface";
-import DeleteUserModal from "../DeleteUser/DeleteUserModal";
+import DeleteUserModal from "../../components/DeleteUser/DeleteUserModal";
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
-import CreateUserModal from "../CreateUser/CreateUserModal";
+import CreateUserModal from "../../components/CreateUser/CreateUserModal";
 import { EyeIcon, PencilSquareIcon, PlusIcon } from "@heroicons/react/24/solid";
 import { useAppDispatch, useTypedSelector } from "../../store";
 import { getDatos } from "../../ApiService";
@@ -134,7 +134,7 @@ const UserTable: React.FC = () => {
       </table>
       <div className="flex justify-between items-center mt-4">
         <div className="flex items-center">
-          <span className="mr-2">Rows per page:</span>
+          <span className="mr-2">Registros por página:</span>
           <select
             value={rowsPerPage}
             onChange={handleChangeRowsPerPage}
@@ -152,7 +152,7 @@ const UserTable: React.FC = () => {
             {"<"}
           </button>
           <span className="mx-2">
-            Page {page} of ...
+            Página {page} de ...
           </span>
           <button
             onClick={() => handleChangePage(page + 1)}
