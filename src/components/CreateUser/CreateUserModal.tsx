@@ -5,6 +5,8 @@ import { XMarkIcon } from '@heroicons/react/24/solid';
 import { useDispatch } from "react-redux";
 import { addUser } from "../../userReducer";
 import { postUser } from "../../ApiService";
+import { UserPlusIcon } from "@heroicons/react/24/outline";
+import Spinner from "../SpinnerLoadding/Spinner";
 
 type CreateUserModalProps = {
     isOpen: boolean;
@@ -18,11 +20,13 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
     const [addEmail, setEmail] = useState('');
     const [addGender, setGender] = useState<Gender>(Gender.Male);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const handleCreateClick = async () => {
         if (!addName.trim() || !addEmail.trim() || !addGender.trim()) {
             setErrorMessage('Por favor, complete todos los campos.');
             return;
         }
+        setIsLoading(true);
         const formData = {
             name: addName.trim(),
             email: addEmail.trim(),
@@ -37,6 +41,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
         setGender(Gender.Male);
         setErrorMessage('');
         onClose();
+        setIsLoading(false);
     };
     const handleCancelClick = () => {
         onClose();
@@ -54,12 +59,22 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
             className="modal fixed top-1/4 left-1/2  -translate-x-1/2 -translate-y-1/2 bg-white  p-5  shadow-lg rounded-lg"
             overlayClassName=" fixed top-0 left-0 w-full h-full bg-gray-700 bg-opacity-40">
             <div>
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold text-gray-700">Crear Usuario</h2>
-                    <h2 onClick={onClose} className="text-gray-400 hover:text-gray-800 focus:outline-none">
+                
+            
+                <div className="flex justify-between items-center pb-3">
+                    <div className="flex items-center">
+                        <span className="p-2 bg-green-100 rounded-full">
+                            <UserPlusIcon className="w-6 h-6 text-green-600" />
+                        </span>
+                    </div>
+                    <button onClick={onClose} className="bg-transparent  text-gray-400 py-1 px-1 rounded-5 hover:bg-gray-200">
                         <XMarkIcon className="w-6 h-6" />
-                    </h2>
+                    </button>
                 </div>
+                
+                    <h2 className="text-xl font-bold text-gray-700 pb-3">Crear Usuario</h2>
+                    <h2 className="text-l text-gray-400 pb-5 pb-1">Agregue los campos solicitados.</h2>
+                
                 {errorMessage && (
                     <p className="text-sm text-red-500 mb-4">{errorMessage}</p>
                 )}
@@ -117,7 +132,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
                             type="button"
                             onClick={handleCreateClick}
                             className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Crear
+                            
+                            {isLoading ? <Spinner /> : "Crear"}
                         </button>
                     </div>
                 </form>
