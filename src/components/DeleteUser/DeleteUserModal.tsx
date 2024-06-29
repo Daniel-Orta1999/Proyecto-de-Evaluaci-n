@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { removeUser } from "../../userReducer";
 import { deleteUser } from "../../ApiService";
 import { UserTableUser } from "../../UserInterface";
+import { useState } from 'react';
+import Spinner from '../SpinnerLoadding/Spinner';
 
 type DeleteUserModalProps = {
     isOpen: boolean;
@@ -15,12 +17,15 @@ type DeleteUserModalProps = {
 const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose, user }) => {
 
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
+
     const handleDeleteClick = async () => {
         if (!user) return;
+        setIsLoading(true);
         const data = await deleteUser(user.id);
         if (data == 204) {
-            console.log("se borro loko")
         }
+        setIsLoading(false);
         dispatch(removeUser(user.id));
         console.log("data", data);
         onClose();
@@ -40,7 +45,7 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose, user
             <div>
                 <div className="flex justify-between items-center pb-3">
                     <div className="flex items-center">
-                        <span className="p-2 bg-red-100 rounded-full">
+                        <span className="p-2 bg-red-100 rounded-full ">
                             <TrashIcon className="w-6 h-6 text-red-600" />
                         </span>
                     </div>
@@ -50,11 +55,14 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose, user
                 </div>
 
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-bold text-gray-600">Eliminar Usuario: {user?.id}</h2>
-
+                    <h2 className="text-xl font-bold text-gray-600 ">Eliminar Usuario: {user?.id}</h2>
                 </div>
                 <div>
-                    <h2 className="text-l text-gray-400 pb-5 ">¿Estas seguro que deseas eliminar al usuario: {user?.name}?</h2>
+                    <p className="text-l text-gray-400 pb-5 ">¿Estás seguro que deseas eliminar al usuario:
+                        <span className='font-bold text-gray-500'>
+                            {" " + user?.name}?
+                        </span>
+                    </p>
                 </div>
                 <form>
                     <div className="flex justify-end">
@@ -68,10 +76,11 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose, user
                             type="button"
                             onClick={handleDeleteClick}
                             className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Eliminar
+                            {isLoading ? <Spinner /> : "Eliminar"}
                         </button>
                     </div>
                 </form>
+
             </div>
         </Modal>
     );
