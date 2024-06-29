@@ -121,12 +121,12 @@ const EditUserForm: React.FC<EditUserProps> = ({ action }) => {
                         <span className="absolute start-0 bottom-3 text-white-500 ">
                             <UsersIcon className="w-6 h-6" />
                         </span>
-                        <label htmlFor="gender" className="absolute cursor-text -left-2 -top-3 text-sm text-white-700 bg-inherit mx-1 px-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-white-500 peer-placeholder-shown:top-2 peer-placeholder-shown:left-5 peer-focus:-top-3    peer-focus:-left-2 peer-focus:text-white-900  peer-focus:text-sm transition-all ">Genero:</label>
+                        <label htmlFor="gender" className="absolute cursor-text -left-2 -top-3 text-sm text-white-700 bg-inherit mx-1 px-1 peer-placeholder-shown:text-base peer-placeholder-shown:text-white-500 peer-placeholder-shown:top-2 peer-placeholder-shown:left-5 peer-focus:-top-3    peer-focus:-left-2 peer-focus:text-white-900  peer-focus:text-sm transition-all ">Género:</label>
                         <select
                             disabled={!accion}
                             id="gender"
                             value={addGender}
-                            onChange={(e) => setGender(e.target.value as Gender)} // Asegúrate de castear el valor a Gender
+                            onChange={(e) => setGender(e.target.value as Gender)} 
                             className="block py-2.5 ps-8 pe-0 w-full text-base text-gray-400 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-violet-400 peer"
                             required>
                             <option value={Gender.Male}>{Gender.Male}</option>
@@ -147,7 +147,7 @@ const EditUserForm: React.FC<EditUserProps> = ({ action }) => {
                             disabled={!accion}
                             id="status"
                             value={addStatus}
-                            onChange={(e) => setStatus(e.target.value as Status)} // Asegúrate de castear el valor a Gender
+                            onChange={(e) => setStatus(e.target.value as Status)} 
                             className="block py-2.5 ps-8 pe-0 w-full text-base text-gray-400 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-violet-400 peer"
                             required>
                             <option value={Status.Active}>{Status.Active}</option>
