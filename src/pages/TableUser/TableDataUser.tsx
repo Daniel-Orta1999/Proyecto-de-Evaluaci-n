@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { UserTableUser } from "../../UserInterface";
 import DeleteUserModal from "../../components/DeleteUser/DeleteUserModal";
-import { TrashIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 import CreateUserModal from "../../components/CreateUser/CreateUserModal";
-import { EyeIcon, PencilSquareIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon, EyeIcon, MagnifyingGlassIcon, PencilSquareIcon, PlusIcon, TrashIcon, } from "@heroicons/react/24/solid";
 import { useAppDispatch, useTypedSelector } from "../../store";
 import { getDatos } from "../../ApiService";
 import { setUsers } from "../../userReducer";
@@ -58,11 +57,9 @@ const UserTable: React.FC = () => {
   };
 
   const handleChangePage = (newPage: number) => {
-    console.log("clic")
     setPage(newPage);
     console.log(newPage);
     fetchUsers(newPage, rowsPerPage);
-
   };
 
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -84,21 +81,24 @@ const UserTable: React.FC = () => {
     <div className="overflow-x-auto">
       <h1 className="text-2xl font-bold mb-4">Lista de Usuarios</h1>
       <div className="pb-3 flex justify-between items-center">
-        <input
-          type="text"
-          placeholder="Buscar por nombre..."
-          value={searchTerm}
-          onChange={handleSearch}
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"/>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Buscar por nombre..."
+            value={searchTerm}
+            onChange={handleSearch}
+            className="bg-slate-900 px-3 py-2 pl-8 border border-slate-300 shadow-md rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 text-red" />
+          <MagnifyingGlassIcon className="absolute top-1/2 left-2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+        </div>
         <button
           type="button"
           onClick={openUserModal}
-          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          className="inline-flex justify-center py-2 px-4 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
           <PlusIcon className="w-5 h-5 mr-1" /> Nuevo Usuario
         </button>
       </div>
-      <table className="min-w-full bg-white border border-gray-200">
-        <thead className="bg-gray-50 text-black">
+      <table className="min-w-full bg-slate-700 border border-none rounded-md shadow-lg">
+        <thead className="bg-slate-800 text-white ">
           <tr>
             <th className="py-2 px-4 border-b">ID</th>
             <th className="py-2 px-4 border-b">Nombre</th>
@@ -110,21 +110,28 @@ const UserTable: React.FC = () => {
         </thead>
         <tbody>
           {filteredData.slice().map((user) => (
-            <tr key={user.id} className="hover:bg-gray-100 text-black">
-              <td className="py-2 px-4 border-b text-center">{user.id}</td>
-              <td className="py-2 px-4 border-b">{user.name}</td>
-              <td className="py-2 px-4 border-b">{user.email}</td>
-              <td className="py-2 px-4 border-b">{user.gender}</td>
-              <td className="py-2 px-4 border-b">{user.status}</td>
-              <td className="py-2 px-4 border-b text-center">
+            <tr key={user.id} className="hover:bg-slate-500 text-white">
+              <td className="py-2 px-4  text-center">{user.id}</td>
+              <td className="py-2 px-4 ">{user.name}</td>
+              <td className="py-2 px-4">{user.email}</td>
+              <td className="py-2 px-4 ">{user.gender}</td>
+              <td className="py-2 px-4">
+                <span
+                  className={`inline-flex items-center px-2 py-1  rounded-full text-xs font-semibold 
+                    ${user.status === "active" ? "bg-green-100 text-green-500" : "bg-red-100 text-red-500"
+                    }`}>
+                  {user.status}
+                </span>
+              </td>
+              <td className="py-2 px-4  text-center">
                 <button
-                  onClick={() => handleShow(user.id)} className="bg-transparent text-blue-600 py-1 px-2 rounded hover:bg-gray-200">
+                  onClick={() => handleShow(user.id)} className="bg-transparent text-blue-500 py-1 px-2 rounded hover:bg-slate-400">
                   <EyeIcon className="w-4 h-4" />
                 </button>
-                <button onClick={() => handleEdit(user)} className="bg-transparent text-violet-600 py-1 px-2 rounded hover:bg-gray-200">
+                <button onClick={() => handleEdit(user)} className="bg-transparent text-violet-500 py-1 px-2 rounded hover:bg-slate-400">
                   <PencilSquareIcon className="w-4 h-4" />
                 </button>
-                <button onClick={() => openModal(user)} className="bg-transparent text-red-600 py-1 px-2 rounded hover:bg-gray-200">
+                <button onClick={() => openModal(user)} className="bg-transparent text-red-500 py-1 px-2 rounded hover:bg-slate-400">
                   <TrashIcon className="w-4 h-4" />
                 </button>
               </td>
@@ -144,20 +151,20 @@ const UserTable: React.FC = () => {
             <option value={25}>25</option>
           </select>
         </div>
-        <div>
+        <div >
           <button
             onClick={() => handleChangePage(page - 1)}
             disabled={page === 1}
-            className="p-1">
-            {"<"}
+            className="p-1 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <ChevronLeftIcon className="w-5 h-5 " />
           </button>
           <span className="mx-2">
-            Página {page} de ...
+            Página {page}
           </span>
           <button
             onClick={() => handleChangePage(page + 1)}
-            className="p-1">
-            {">"}
+            className="p-1 border border-transparent shadow-md text-sm font-medium rounded-md text-white bg-violet-600 hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <ChevronRightIcon className="w-5 h-5 " />
           </button>
         </div>
       </div>
