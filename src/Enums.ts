@@ -1,8 +1,5 @@
 export enum Gender {
-    Male = 'male',
-    Female = 'female',
+    Masculino = 'Masculino',
+    Femenino = 'Femenino',
 }
-export enum Status {
-    Active = 'active',
-    Inactive = 'inactive',
-}
+//Enum para mostrar en el select  de  genero

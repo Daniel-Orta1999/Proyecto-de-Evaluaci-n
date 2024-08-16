@@ -17,20 +17,16 @@ const DeleteUserModal: React.FC<DeleteUserModalProps> = ({ isOpen, onClose, user
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
-
-    const handleDeleteClick = async () => {
-        if (!user) return;
+    const handleDeleteClick = async () => {//Evento que se ejecuta al confirmar la eliminacion
+        if (!user) return;//Validacion en caso de no encontrar los datos del usuario
         setIsLoading(true);
-        const data = await deleteUser(user.id);
-        if (data == 204) {
-        }
+        await deleteUser(user.id);//se manda id al endpoint para  la eliminacion del  usuario
         setSuccessMessage("¡Usuario eliminado exitosamente!");
         setTimeout(() => {
             setSuccessMessage(null);
         }, 4000);
         setIsLoading(false);
         dispatch(removeUser(user.id));
-        console.log("data", data);
         onClose();
     };
     const handleCancelClick = () => {

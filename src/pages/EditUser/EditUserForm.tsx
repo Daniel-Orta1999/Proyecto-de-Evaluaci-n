@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Gender, Status } from "../../Enums";
+import { Gender } from "../../Enums";
 import { useDispatch, useSelector } from "react-redux";
 import { editUser } from "../../userReducer";
 import { putUser } from "../../ApiService";
@@ -20,18 +20,16 @@ const EditUserForm: React.FC<EditUserProps> = ({ action }) => {
     const user = users.find((u) => u.id === Number(id));
     const [addName, setName] = useState(user?.name || '');
     const [addEmail, setEmail] = useState(user?.email || '');
-    const [addGender, setGender] = useState<Gender>(user?.gender || Gender.Male);
-    const [addStatus, setStatus] = useState<Status>(user?.status || Status.Active);
+    const [addGender, setGender] = useState<Gender>(user?.gender || Gender.Masculino);
+    const [addStatus, setStatus] = useState<any>(user?.status ?? true);
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-    const editClic = (user: any) => {
+    const editClic = (user: any) => {//habilita los campos para editar
         navigate(`/edit/${user.id}`);
-        console.log(`Editar usuario con ID: ${JSON.stringify(user)}`);
-
     };
-    const handleUpdateClick = async () => {
+    const handleUpdateClick = async () => {//Evento para guardar los cambios del  usuario
         if (!addName.trim() || !addEmail.trim() || !addGender.trim()) {
             setErrorMessage('Por favor, complete todos los campos.');
             return;
@@ -41,18 +39,18 @@ const EditUserForm: React.FC<EditUserProps> = ({ action }) => {
             setSuccessMessage(null);
         }, 4000);
         setIsLoading(true);
-        const formData = {
+        const formData = {//Informacion que se envia con el id para que se actualice el usuario
+            id: user?.id,
             name: addName.trim(),
             email: addEmail.trim(),
             gender: addGender,
             status: addStatus,
         };
-        const data = await putUser(formData, id);
-        console.log("data", data);
-        dispatch(editUser(data));
+        const data = await putUser(formData);//llamada al back  con la informacion del usuario
+        dispatch(editUser(data));//Actualiza el usuario en la tabla
         setName('');
         setEmail('');
-        setGender(Gender.Male);
+        setGender(Gender.Masculino);
         setErrorMessage('');
         navigate('/');
         setIsLoading(false);
@@ -60,9 +58,12 @@ const EditUserForm: React.FC<EditUserProps> = ({ action }) => {
     const handleCancelClick = () => {
         setName('');
         setEmail('');
-        setGender(Gender.Male);
+        setGender(Gender.Masculino);
         setErrorMessage('');
         navigate('/');
+    };
+    const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setStatus(e.target.value === 'true');
     };
     return (
         <>
@@ -134,8 +135,8 @@ const EditUserForm: React.FC<EditUserProps> = ({ action }) => {
                                 onChange={(e) => setGender(e.target.value as Gender)}
                                 className="block py-2.5 ps-8 pe-0 w-full text-base text-gray-400 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-violet-400 peer"
                                 required>
-                                <option value={Gender.Male}>{Gender.Male}</option>
-                                <option value={Gender.Female}>{Gender.Female}</option>
+                                <option value={Gender.Masculino}>{Gender.Masculino}</option>
+                                <option value={Gender.Femenino}>{Gender.Femenino}</option>
                             </select>
                             <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none hover-violet-400">
                                 <ChevronDownIcon className="w-5 h-5 text-gray-400" />
@@ -151,12 +152,13 @@ const EditUserForm: React.FC<EditUserProps> = ({ action }) => {
                             <select
                                 disabled={!accion}
                                 id="status"
-                                value={addStatus}
-                                onChange={(e) => setStatus(e.target.value as Status)}
-                                className="block py-2.5 ps-8 pe-0 w-full text-base text-gray-400 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-violet-400 peer"
-                                required>
-                                <option value={Status.Active}>{Status.Active}</option>
-                                <option value={Status.Inactive}>{Status.Inactive}</option>
+                                value={String(addStatus)}
+                                onChange={handleStatusChange}
+                                className="block py-2.5 ps-8 pe-0 w-full text-base text-gray-400 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-violet-400 peer"
+                                required
+                            >
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
                             </select>
                             <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none hover-violet-400">
                                 <ChevronDownIcon className="w-5 h-5 text-gray-400" />

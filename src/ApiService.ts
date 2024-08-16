@@ -1,56 +1,50 @@
 import axios from 'axios';
-
-const API_URL = 'https://gorest.co.in/public/v2/';
+const API_URL = 'https://localhost:52929/api/';
 const axiosInstance = axios.create({
     baseURL: API_URL,
     timeout: 10000,
 });
-const token = "355978d0c49eef7a7ce8c0a058ae5523734d3c81fb4fc43c86be9686438ca0b0";
-
-export const getDatos = async (page: number, per_page: number) => {
+//Servicio para llamadas al back 
+export const getDatos = async () => {//EndPoint que Trae todos el listado de usuarios
     try {
-        const response = await axiosInstance.get(`/users?page=${page}&per_page=${per_page}`);
-        return response;
+        const response = await axiosInstance.get(`Test/Usuarios`);
+        return response.data.data;
     } catch (error) {
         throw new Error(`Error al obtener datos: ${error}`);
     }
 };
-export const postUser = async (formData: any) => {
+
+export const postUser = async (formData: any) => {//Llamada al endpoit para registrar un usuario
     try {
-        const response = await axiosInstance.post('/users', formData, {
+        const response = await axiosInstance.post('Test/RegistrarUsuario', formData, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
             }
         });
-        console.log(response.status)
         return response.data;
     } catch (error) {
         throw new Error(`Error al crear usuario: ${error}`);
     }
 };
 
-export const deleteUser = async (id: any) => {
+export const deleteUser = async (id: any) => {//Llamada al endpoint para eliminar un  usuario
     try {
-        const response = await axiosInstance.delete(`/users/${id}`, {
+        const response = await axiosInstance.delete(`Test/EliminarUsuario?id=${id}`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
             }
         });
-        console.log(response)
         return response.status;
     } catch (error) {
         throw new Error(`Error al crear usuario: ${error}`);
     }
 };
 
-export const putUser = async (formData: any, id: number) => {
+export const putUser = async (formData: any) => {//Llamada al endpoint para eliminar un usuario
     try {
-        const response = await axiosInstance.put(`/users/${id}`, formData, {
+        const response = await axiosInstance.put(`Test/ActualizarUsuario`, formData, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
             }
         });
         return response.data;

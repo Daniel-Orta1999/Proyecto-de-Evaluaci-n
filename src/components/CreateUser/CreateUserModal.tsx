@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Modal from 'react-modal';
-import { Gender, Status } from "../../Enums";
+import { Gender } from "../../Enums";
 import { CheckBadgeIcon, ChevronDownIcon, EnvelopeIcon, UserIcon, UsersIcon, XMarkIcon } from '@heroicons/react/24/solid';
 import { useDispatch } from "react-redux";
 import { addUser } from "../../userReducer";
@@ -8,7 +8,7 @@ import { postUser } from "../../ApiService";
 import { UserPlusIcon } from "@heroicons/react/24/outline";
 import Spinner from "../SpinnerLoadding/Spinner";
 
-type CreateUserModalProps = {
+type CreateUserModalProps = {//Propiedades a recibir para abrir el modal o cerrar
     isOpen: boolean;
     onClose: () => void;
 };
@@ -19,11 +19,11 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
     const dispatch = useDispatch();
     const [addName, setName] = useState('');
     const [addEmail, setEmail] = useState('');
-    const [addGender, setGender] = useState<Gender>(Gender.Male);
+    const [addGender, setGender] = useState<Gender>(Gender.Masculino);
     const [errorMessage, setErrorMessage] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const handleCreateClick = async () => {
-        if (!addName.trim() || !addEmail.trim() || !addGender.trim()) {
+    const handleCreateClick = async () => {//evento que se ejecuta para guardar usuarios
+        if (!addName.trim() || !addEmail.trim() || !addGender.trim()) {//Validacion de los campos vacios
             setErrorMessage('Por favor, complete todos los campos.');
             return;
         }
@@ -32,18 +32,20 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
             setSuccessMessage(null);
         }, 4000);
         setIsLoading(true);
-        const formData = {
+        const formData = {//Arreglo que contiene la informacion del formulario a guardar
             name: addName.trim(),
             email: addEmail.trim(),
             gender: addGender,
-            status: Status.Active,
+            status: true,//por defecto al crear un usuario de guarda activo
         };
-        const data = await postUser(formData);
-        console.log("data", data);
-        dispatch(addUser(data));
+        const jsonData = JSON.stringify(formData);//Se convierte a json para enviar al back
+        const data = await postUser(jsonData);//Es una variable  que guarda la respuesta del endpoint
+        dispatch(addUser(data));//Actualiza el estado de las funciones
+        setSuccessMessage("¡Usuario registrado exitosamente!");
+        //Se limpian los campos del Formulario
         setName('');
         setEmail('');
-        setGender(Gender.Male);
+        setGender(Gender.Masculino);
         setErrorMessage('');
         onClose();
         setIsLoading(false);
@@ -52,7 +54,7 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
         onClose();
         setName('');
         setEmail('');
-        setGender(Gender.Male);
+        setGender(Gender.Masculino);
         setErrorMessage('');
     };
     return (
@@ -129,8 +131,8 @@ const CreateUserModal: React.FC<CreateUserModalProps> = ({ isOpen, onClose }) =>
                                     onChange={(e) => setGender(e.target.value as Gender)}
                                     className="block py-2.5 ps-8 pe-0 w-full text-base text-gray-400 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  focus:outline-none focus:ring-0 focus:border-violet-400 peer"
                                     required>
-                                    <option value={Gender.Male}>{Gender.Male}</option>
-                                    <option value={Gender.Female}>{Gender.Female}</option>
+                                    <option value={Gender.Masculino}>{Gender.Masculino}</option>
+                                    <option value={Gender.Femenino}>{Gender.Femenino}</option>
                                 </select>
                                 <span className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none hover-violet-400">
                                     <ChevronDownIcon className="w-5 h-5 text-gray-400" />

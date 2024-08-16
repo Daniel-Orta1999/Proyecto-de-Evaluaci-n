@@ -2,7 +2,7 @@ import './App.css';
 import { Route, Routes } from 'react-router-dom';
 import EditUserForm from './pages/EditUser/EditUserForm';
 import TableDataUser from './pages/TableUser/TableDataUser';
-
+//Contiene las rutas de la aplicacion web
 function App() {
   return (
     <div>
